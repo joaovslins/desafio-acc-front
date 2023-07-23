@@ -1,0 +1,51 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/" > Home </a></li>
+      <li class="breadcrumb-item active" aria-current="page"> Empresas </li>
+    </ol>
+  </nav>
+  
+  <div class="row mb-4">
+      <div class="col-md">
+          <h2>Empresa</h2>
+      </div>
+      <div class="col-md">
+          <a style='float:right;'  class="btn btn-success" routerLink="/enterprise/new">+ Nova Empresa</a>
+      </div>
+  </div>
+  
+  <div>
+      <table class="table">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th scope="col">Nome Fantasia</th>
+              <th scope="col">Razão Social</th>
+              <th scope="col">CNPJ</th>
+              <th scope="col">CEP</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enterprise of enterprises;">
+                <td>
+                    <strong>{{enterprise.fantasy_name}}</strong><br>
+                </td>
+                <td>
+                    <strong>{{enterprise.corporate_name}}</strong><br>
+                </td>
+                <td>
+                    <strong>{{enterprise.cnpj}}</strong><br>
+                </td>
+                <td>
+                    <strong>{{ enterprise.cep }}</strong><br>
+                </td>
+                <td>
+                    <div>
+                    <a [routerLink]="[enterprise.id, 'edit']" class="btn btn-outline-primary btn-sm custom-margin">Editar</a>
+                    <button (click)="deleteProvider(enterprise.id!)" class="btn btn-outline-danger btn-sm custom-margin">Excluir</button>
+                    </div>
+                </td>
+            </tr>
+          </tbody>
+        </table>
+  </div>

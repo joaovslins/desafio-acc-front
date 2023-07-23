@@ -1,0 +1,77 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/" > Home </a></li>
+      <li class="breadcrumb-item active" aria-current="page"> Fornecedor </li>
+    </ol>
+  </nav>
+  
+  <div class="row mb-4">
+      <div class="col-md">
+          <h2>Fornecedor</h2>
+      </div>
+      <div class="col-md">
+          <a style='float:right;'  class="btn btn-success" routerLink="/provider/new">+ Novo Fornecedor</a>
+      </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="row card-body">
+      <div class="col-md-2">
+        <h4>Pesquisar</h4>
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" [(ngModel)]="nameProvider" (input)="filter()" placeholder="Filtrar por Nome">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" [(ngModel)]="documentProvider" (input)="filter()" placeholder="Filtrar por CPF/CNPJ">
+      </div>
+    </div>
+  </div>
+  
+  <div>
+      <table class="table">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th scope="col">Nome</th>
+              <th scope="col">Email</th>
+              <th scope="col">Documento</th>
+              <th scope="col">Tipo de Parceiro</th>
+              <th scope="col">Idade</th>
+              <th scope="col">RG</th>
+              <th scope="col">Data de Nascimento</th>
+              <th scope="col">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let provider of providers;">
+              <td>
+                  <strong>{{provider.name}}</strong><br>
+              </td>
+              <td>
+                <strong>{{provider.email}}</strong><br>
+            </td>
+            <td>
+                <strong>{{provider.document}}</strong><br>
+            </td>
+            <td>
+                <strong>{{ typeAsText(provider.type) }}</strong><br>
+            </td>
+            <td>
+                <strong>{{provider.age}}</strong><br>
+            </td>
+            <td>
+                <strong>{{provider.rg}}</strong><br>
+            </td>
+            <td>
+                <strong>{{ converterData(provider.birthday) }}</strong><br>
+            </td>
+              <td>
+                <div>
+                  <a [routerLink]="[provider.id, 'edit']" class="btn btn-outline-primary btn-sm custom-margin">Editar</a>
+                  <button (click)="deleteProvider(provider.id!)" class="btn btn-outline-danger btn-sm custom-margin">Excluir</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+  </div>

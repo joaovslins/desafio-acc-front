@@ -1,0 +1,89 @@
+<nav class="mb-5">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/"> Home </a></li>
+      <li class="breadcrumb-item"><a routerLink="/enterprise"> Empresas </a></li>
+      <li class="breadcrumb-item active"> {{ pageTitle }} </li>
+    </ol>
+</nav>
+
+
+
+<form [formGroup]="enterpriseForm" (submit)="submitForm()">
+    <div class="card">
+        <div class="card-header">
+            <div class="row mb-4">
+                <div class="col-md">
+                    <h2>{{ pageTitle }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body col row">
+            <div class="mb-3 col-md-6">
+                <label for="name" class="form-label">Razão Social</label>
+                <input type="text" class="form-control" id="corporate_name" formControlName="corporate_name">
+                <div class="text-danger">
+                    <div *ngIf="enterpriseForm.get('corporate_name')?.invalid && enterpriseForm.get('corporate_name')?.touched">
+                        <div *ngIf="enterpriseForm.get('corporate_name')?.errors?.['required']">Dado Obrigatório</div>
+                        <div *ngIf="enterpriseForm.get('corporate_name')?.errors?.['minlength']">Mínimo de 2 caracteres</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="name" class="form-label">Nome Fantasia</label>
+                <input type="text" class="form-control" id="fantasy_name" formControlName="fantasy_name">
+                <div class="text-danger">
+                    <div *ngIf="enterpriseForm.get('fantasy_name')?.invalid && enterpriseForm.get('fantasy_name')?.touched">
+                        <div *ngIf="enterpriseForm.get('fantasy_name')?.errors?.['required']">Dado Obrigatório</div>
+                        <div *ngIf="enterpriseForm.get('fantasy_name')?.errors?.['minlength']">Mínimo de 2 caracteres</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="cep" class="form-label">CEP</label>
+                <input type="text" class="form-control" id="cep" formControlName="cep" [imask]="{ mask: '00000000' }" [(ngModel)]="cepValue" (input)="onCepChange($event)">
+                <div *ngIf="invalidCep" class="text-danger">
+                    <p>CEP inválido</p>
+                </div>
+                <div *ngIf="addressData">
+                    <p>Endereço: {{ addressData.logradouro }}</p>
+                    <p>Bairro: {{ addressData.bairro }}</p>
+                    <p>Cidade: {{ addressData.cidade }}</p>
+                    <p>Estado: {{ addressData.uf }}</p>
+                </div>
+                <div class="text-danger">
+                  <div *ngIf="enterpriseForm.get('cep')?.invalid && enterpriseForm.get('cep')?.touched">
+                    <div *ngIf="enterpriseForm.get('cep')?.errors?.['required']">Dado Obrigatório</div>
+                    <div *ngIf="enterpriseForm.get('cep')?.errors?.['minlength']">Mínimo de 8 caracteres</div>
+                  </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="document" class="form-label">CNPJ</label>
+                <input type="text" class="form-control" id="cnpj" formControlName="cnpj">
+                <div class="text-danger">
+                    <div *ngIf="enterpriseForm.get('cnpj')?.invalid && enterpriseForm.get('cnpj')?.touched">
+                        <div *ngIf="enterpriseForm.get('cnpj')?.errors?.['required']">Dado Obrigatório</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12">
+                <label for="enterprise">Fornecedores</label>
+                <p-multiSelect [options]="providersSelectOptions" formControlName="providers" [style]="{ 'width': '100%' }">
+                    <ng-template let-option>
+                      {{ option.label }}
+                    </ng-template>
+                </p-multiSelect>            
+            </div>
+        </div>
+    </div>
+
+    <button [disabled]="!enterpriseForm.valid" type="submit" class="btn btn-primary btn-lg col-md-4 mt-3">Salvar</button>
+
+    <div class="alert alert-danger mt-3" *ngIf="serverErrorMessages">
+        <strong>Erro no Servidor</strong>
+        <ul>
+            <li *ngFor="let message of serverErrorMessages">{{ message }}</li>
+        </ul>
+    </div>
+</form>
+

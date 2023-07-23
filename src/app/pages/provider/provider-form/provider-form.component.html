@@ -1,0 +1,128 @@
+<nav class="mb-5">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/"> Home </a></li>
+      <li class="breadcrumb-item"><a routerLink="/provider"> Fornecedor </a></li>
+      <li class="breadcrumb-item active"> {{ pageTitle }} </li>
+    </ol>
+</nav>
+
+
+
+<form [formGroup]="providerForm" (submit)="submitForm()">
+    <div class="card">
+        <div class="card-header">
+            <div class="row mb-4">
+                <div class="col-md">
+                    <h2>{{ pageTitle }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="card-body col row">
+            <div class="mb-3 col-md-8">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="name" formControlName="name">
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('name')?.invalid && providerForm.get('name')?.touched">
+                        <div *ngIf="providerForm.get('name')?.errors?.['required']">Dado Obrigatório</div>
+                        <div *ngIf="providerForm.get('name')?.errors?.['minlength']">Mínimo de 2 caracteres</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-4">
+                <label for="type" class="form-label">Tipo</label>
+                <select class="form-select" id="type" formControlName="type">
+                    <option value="1">Pessoa Física</option>
+                    <option value="2">Pessoa Jurídica</option>
+                </select>
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('type')?.invalid && providerForm.get('type')?.touched">
+                        <div *ngIf="providerForm.get('type')?.errors?.['required']">Dado Obrigatório</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-8">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" formControlName="email">
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('email')?.invalid && providerForm.get('email')?.touched">
+                        <div *ngIf="providerForm.get('email')?.errors?.['required']">Dado Obrigatório</div>
+                        <div *ngIf="providerForm.get('email')?.errors?.['email']">Email inválido</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-4">
+                <label for="cep" class="form-label">CEP</label>
+                <input type="text" class="form-control" id="cep" formControlName="cep" [imask]="{ mask: '00000000' }" [(ngModel)]="cepValue" (input)="onCepChange($event)">
+                <div *ngIf="invalidCep" class="text-danger">
+                    <p>CEP inválido</p>
+                </div>
+                <div *ngIf="addressData">
+                    <p>Endereço: {{ addressData.logradouro }}</p>
+                    <p>Bairro: {{ addressData.bairro }}</p>
+                    <p>Cidade: {{ addressData.cidade }}</p>
+                    <p>Estado: {{ addressData.uf }}</p>
+                </div>
+                <div class="text-danger">
+                  <div *ngIf="providerForm.get('cep')?.invalid && providerForm.get('cep')?.touched">
+                    <div *ngIf="providerForm.get('cep')?.errors?.['required']">Dado Obrigatório</div>
+                    <div *ngIf="providerForm.get('cep')?.errors?.['minlength']">Mínimo de 8 caracteres</div>
+                  </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-4">
+                <label for="document" class="form-label">Documento</label>
+                <input type="text" class="form-control" id="document" formControlName="document">
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('document')?.invalid && providerForm.get('document')?.touched">
+                        <div *ngIf="providerForm.get('document')?.errors?.['required']">Dado Obrigatório</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-8">
+                <label for="age" class="form-label">Idade</label>
+                <input type="number" class="form-control" id="age" formControlName="age">
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('age')?.invalid && providerForm.get('age')?.touched">
+                        <div *ngIf="providerForm.get('age')?.errors?.['required']">Dado Obrigatório</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="rg" class="form-label">RG</label>
+                <input type="text" class="form-control" id="rg" formControlName="rg">
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('rg')?.invalid && providerForm.get('rg')?.touched">
+                        <div *ngIf="providerForm.get('rg')?.errors?.['required']">Dado Obrigatório</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3 col-md-6">
+                <label for="birthday" class="form-label">Data de Nascimento</label>
+                <input type="date" class="form-control" id="birthday" formControlName="birthday">
+                <div class="text-danger">
+                    <div *ngIf="providerForm.get('birthday')?.invalid && providerForm.get('birthday')?.touched">
+                        <div *ngIf="providerForm.get('birthday')?.errors?.['required']">Dado Obrigatório</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12">
+                <label for="enterprise">Empresas</label>
+                <p-multiSelect [options]="enterprisesSelectOptions" formControlName="enterprises" [style]="{ 'width': '100%' }">
+                    <ng-template let-option>
+                      {{ option.label }}
+                    </ng-template>
+                </p-multiSelect>            
+            </div>
+        </div>
+    </div>
+
+    <button [disabled]="!providerForm.valid" type="submit" class="btn btn-primary btn-lg col-md-4 mt-3">Salvar</button>
+
+    <div class="alert alert-danger mt-3" *ngIf="serverErrorMessages">
+        <strong>Erro no Servidor</strong>
+        <ul>
+            <li *ngFor="let message of serverErrorMessages">{{ message }}</li>
+        </ul>
+    </div>
+</form>
+
